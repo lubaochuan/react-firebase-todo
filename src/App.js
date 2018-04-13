@@ -29,6 +29,18 @@ class App extends Component {
     let {[id]: deleted, ...items} = this.state.items
     this.setState({items})
   }
+  
+  addItem=(e) => {
+    e.preventDefault()
+    let items = {
+      ...this.state.items,
+      [new Date().valueOf()]:{
+        item: this.todoItem.value,
+        completed: false
+      }
+    }
+    this.setState({items})
+  }
 
   render() {
     return (
@@ -43,7 +55,9 @@ class App extends Component {
              <ItemsComponent
                items={this.state.items}
                done={false}
-               action={this.completeItem}/>
+               action={this.completeItem}
+               addItem={this.addItem}
+               inputRef={el => this.todoItem = el}/>
           }/>
           <Route exact path="/completed" render={props =>
              <ItemsComponent
