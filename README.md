@@ -6,6 +6,7 @@ Example app from https://dev.to/aurelkurtula/creating-an-app-with-react-and-fire
 npm install -g create-react-app
 create-react-app react-firebase-todo
 npm install
+yarn start
 ```
 
 
