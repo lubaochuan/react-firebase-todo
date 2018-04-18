@@ -12,15 +12,19 @@ const Menu = (props) => {
     );
   } else {
     return (
-        <div className="auth">
-          <p className="facebook" onClick={props.authWithFacebook}>
-            Facebook
-          </p>
-          <form>
-            <label> Email <input type="email" /> </label>
-            <label> Password <input type="password" /> </label>
-          </form>
-        </div>
+      <div className="auth">
+        <p className="facebook" onClick={props.authWithFacebook}>Facebook</p>
+        <form onSubmit={(event) =>
+          { props.EmailAndPasswordAuthentication(event) }}>
+          <label>
+            Email <input type="email" ref={ props.emailInput } />
+          </label>
+          <label>
+            Password  <input type="password" ref={ props.passwordInput } />
+          </label>
+          <input type="submit" value="Register/Login" />
+        </form>
+      </div>
     );
   }
 }

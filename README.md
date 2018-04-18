@@ -9,10 +9,15 @@ npm install
 yarn start
 
 yarn add firebase
+
+npm install --save node-sass-chokidar
 ```
 
 Add firebase realtime database is covered in
 [part 2](https://dev.to/aurelkurtula/creating-an-app-with-react-and-firebase---part-two-5hmc).
+
+Add firebase authentication is covered in
+[part 3](https://github.com/aurelkurtula/todo-app-with-react-and-firebase/tree/part-three).
 
 Below you will find some information on how to perform common tasks.<br>
 You can find the most recent version of this guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).

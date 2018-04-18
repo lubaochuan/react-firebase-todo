@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import ItemsComponent from './components/ItemsComponent';
 import Menu from './components/Menu';
 import { fire, facebookProvider } from './fire';
@@ -24,7 +24,23 @@ class App extends Component {
         }
       })
   }
-  
+
+  EmailAndPasswordAuthentication=(e)=>{
+    e.preventDefault()
+    const email = this.emailInput.value;
+    const password = this.passwordInput.value;
+    fire.auth().fetchProvidersForEmail(email)
+      .then(provider => {
+        if(provider.length === 0){
+          return fire.auth().createUserWithEmailAndPassword(email, password)
+        }else if (provider.indexOf("password") === -1) {
+          console.log("you already have an account with " + provider[0] )
+      } else {
+        return fire.auth().signInWithEmailAndPassword(email, password)
+      }
+    })
+  }
+
   logOut=() => {
     fire.auth().signOut().then((user) => {
       this.setState({items:null})
@@ -79,6 +95,10 @@ class App extends Component {
   }
 
   render() {
+    if (this.state.loading) {
+      return (<h3>Loading</h3>)
+    }
+
     return (
       <BrowserRouter>
         <div className="wrap">
@@ -87,6 +107,9 @@ class App extends Component {
             logOut={this.logOut}
             authenticated={this.state.authenticated}
             authWithFacebook={this.authWithFacebook}
+            emailInput={el => this.emailInput = el}
+            passwordInput={el => this.passwordInput = el}
+            EmailAndPasswordAuthentication={this.EmailAndPasswordAuthentication}
           />
           <Route exact path="/" render={props =>
              <ItemsComponent
@@ -94,12 +117,14 @@ class App extends Component {
                done={false}
                action={this.completeItem}
                addItem={this.addItem}
+               authenticated={this.state.authenticated}
                inputRef={el => this.todoItem = el}/>
           }/>
           <Route exact path="/completed" render={props =>
              <ItemsComponent
                items={this.state.items}
                done={true}
+               authenticated={this.state.authenticated} 
                action={this.deleteItem}/>
           }/>
         </div>
