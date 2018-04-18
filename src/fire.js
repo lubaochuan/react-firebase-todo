@@ -10,4 +10,5 @@ var config = {
 };
 
 const fire = firebase.initializeApp(config);
-export {fire};
+const facebookProvider = new firebase.auth.FacebookAuthProvider();
+export { fire, facebookProvider };

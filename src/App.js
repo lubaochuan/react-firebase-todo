@@ -1,21 +1,53 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import ItemsComponent from './components/ItemsComponent';
-import { fire } from './fire';
+import Menu from './components/Menu';
+import { fire, facebookProvider } from './fire';
 import './App.css';
 
 class App extends Component {
   state = {
-    items: {}
+    items: {},
+    authenticated: false,
+    loading: true
   }
 
-  itemsRef = fire.database().ref('items')
+  itemsRef = '';
+
+  authWithFacebook=()=>{
+    fire.auth().signInWithPopup(facebookProvider)
+      .then((result,error) => {
+        if(error){
+          console.log('unable to signup with firebase')
+        } else {
+          this.setState({authenticated: true })
+        }
+      })
+  }
+  
+  logOut=() => {
+    fire.auth().signOut().then((user) => {
+      this.setState({items:null})
+    })
+  }
 
   componentWillMount(){
-    this.itemsRef.on('value', data=> {
-      this.setState({
-        items: data.val()
-      })
+    this.removeAuthListener = fire.auth().onAuthStateChanged(user=>{
+      if(user){
+        this.itemsRef = fire.database().ref(`items/${user.uid}`)
+        this.itemsRef.on('value', data => {
+          this.setState({
+            authenticated: true,
+            items: data.val(),
+            loading: false
+          })
+        })
+      } else {
+        this.setState({
+          authenticated: false,
+          loading: false
+        })
+      }
     })
   }
 
@@ -51,10 +83,11 @@ class App extends Component {
       <BrowserRouter>
         <div className="wrap">
           <h2>A simple todo app</h2>
-          <ul className="menu">
-            <li><Link to={'/'}>To do</Link></li>
-            <li><Link to={'/completed'}>Completed</Link></li>
-          </ul>
+          <Menu
+            logOut={this.logOut}
+            authenticated={this.state.authenticated}
+            authWithFacebook={this.authWithFacebook}
+          />
           <Route exact path="/" render={props =>
              <ItemsComponent
                items={this.state.items}
