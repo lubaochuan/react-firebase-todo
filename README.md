@@ -7,8 +7,12 @@ npm install -g create-react-app
 create-react-app react-firebase-todo
 npm install
 yarn start
+
+yarn add firebase
 ```
 
+Add firebase realtime database is covered in
+[part 2](https://dev.to/aurelkurtula/creating-an-app-with-react-and-firebase---part-two-5hmc).
 
 Below you will find some information on how to perform common tasks.<br>
 You can find the most recent version of this guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
