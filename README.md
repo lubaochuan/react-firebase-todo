@@ -11,7 +11,18 @@ yarn start
 yarn add firebase
 
 npm install --save node-sass-chokidar
+
+npm install -g firebase-tools
+firebase login
+yarn build
+firebase init
+firebase deploy
 ```
+
+Pay attention to the following question when deploy:
+* which is the directory that will be deployed and served by Firebase? build
+* want the app to be configured as a single-page app? y
+* overwrite “build/index.html”? n
 
 Add firebase realtime database is covered in
 [part 2](https://dev.to/aurelkurtula/creating-an-app-with-react-and-firebase---part-two-5hmc).
